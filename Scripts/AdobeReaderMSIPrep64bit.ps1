@@ -1,4 +1,11 @@
-﻿Write-Host ''
+﻿# Controleren of het script met admin-rechten wordt uitgevoerd. Als dit niet het geval is, zal het script automatisch opnieuw worden uitgevoerd als admin.
+if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Start-Process powershell.exe "-File `"$PSCommandPath`"" -Verb RunAs
+    Exit
+  }
+
+
+Write-Host ''
 Write-Host '->  Installatiebestanden binnenhalen van Adobe server(s)...'
 Write-Host ''
 
@@ -40,7 +47,7 @@ Write-Host ".ZIP uitgepakt."
 Start-Sleep -Seconds 5
 Write-Host ''
 Write-Host ''
-Write-Host "Alle benodigde installatiebestanden om Adobe Acrobat te packagen in Microsoft Intune zijn gedownload naar $workingdir."
+Write-Host "Alle benodigde installatiebestanden om Adobe Acrobat te packagen in Microsoft Intune zijn gedownload naar $env:USERPROFILE\Downloads\Adobe-Acrobat-Setup."
 Start-Sleep -Seconds 2
 Write-Host "Script zal nu afsluiten."
 Start-Sleep -Seconds 5
