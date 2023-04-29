@@ -33,16 +33,16 @@ Write-Host ""
 Write-Host '->  Downloading installation files from Adobe server(s)...'
 Write-Host ''
 
-New-Item -ItemType Directory "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\" -Force | Out-Null
-Set-Location "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\"
+New-Item -ItemType Directory "$env:USERPROFILE\Downloads\Adobe-Acrobat32-Setup\" -Force | Out-Null
+Set-Location "$env:USERPROFILE\Downloads\Adobe-Acrobat32-Setup\"
 
 $webclient = New-Object System.Net.WebClient
 $url = "https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2300120064/AcroRdrDC2300120064_nl_NL.exe"
-$outputfile = "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\AcroRdrDC2300120064_nl_NL.exe"
+$outputfile = "$env:USERPROFILE\Downloads\Adobe-Acrobat32-Setup\AcroRdrDC2300120064_nl_NL.exe"
 $webclient.DownloadFile($url, $outputfile)
 
 Write-Host "Extracting .EXE file to individual files..."
-Start-Process -FilePath "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\AcroRdrDC2300120064_nl_NL.exe" -ArgumentList "-sfx_o`"$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup`" -sfx_ne -quiet" -Wait
+Start-Process -FilePath "$env:USERPROFILE\Downloads\Adobe-Acrobat32-Setup\AcroRdrDC2300120064_nl_NL.exe" -ArgumentList "-sfx_o`"$env:USERPROFILE\Downloads\Adobe-Acrobat32-Setup`" -sfx_ne -quiet" -Wait
 Write-Host ".EXE file extracted to the downloadfolder."
 
 Write-Host ''
@@ -50,11 +50,11 @@ Write-Host ''
 Write-Host '->  Downloading Customization Wizard from Adobe server(s)...'
 $webclient2 = New-Object System.Net.WebClient
 $url2 = "https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/misc/CustWiz2200320310_en_US_DC.exe"
-$outputfile2 = "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\Customization Wizard 2200320310.exe"
+$outputfile2 = "$env:USERPROFILE\Downloads\Adobe-Acrobat32-Setup\Customization Wizard 2200320310.exe"
 $webclient2.DownloadFile($url2, $outputfile2)
 
-$source = "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\Customization Wizard 2200320310.exe"
-$destination = "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup"
+$source = "$env:USERPROFILE\Downloads\Adobe-Acrobat32-Setup\Customization Wizard 2200320310.exe"
+$destination = "$env:USERPROFILE\Downloads\Adobe-Acrobat32-Setup"
 
 # Extract the .msi file from the .exe file using 7-Zip.
 & "C:\Program Files\7-Zip\7z.exe" e "$source" "*.msi" -o"$destination"
@@ -68,7 +68,7 @@ Write-Host ""
 Write-Host ""
 Write-Host "Installing the Adobe Customization software..."
 Start-Sleep -Seconds 2
-$msiFile = "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\CustWiz.msi"
+$msiFile = "$env:USERPROFILE\Downloads\Adobe-Acrobat32-Setup\CustWiz.msi"
 Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$msiFile`" /qn /norestart" -Wait
 
 
@@ -82,12 +82,12 @@ Write-Host '->  Downloading Microsoft Intune Win32 Content Prep Tool from GitHub
 Write-Host ''
 $webclient3 = New-Object System.Net.WebClient
 $url3 = "https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/archive/refs/heads/master.zip"
-$outputfile3 = "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\Microsoft Win32 Content Prep Tool.zip"
+$outputfile3 = "$env:USERPROFILE\Downloads\Adobe-Acrobat32-Setup\Microsoft Win32 Content Prep Tool.zip"
 $webclient3.DownloadFile($url3, $outputfile3)
 
 Write-Host "Extracting Microsoft Win32 Content Prep Tool..."
-Expand-Archive -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\Microsoft Win32 Content Prep Tool.zip" -DestinationPath "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\Intune"
-Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\Microsoft Win32 Content Prep Tool.zip"
+Expand-Archive -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat32-Setup\Microsoft Win32 Content Prep Tool.zip" -DestinationPath "$env:USERPROFILE\Downloads\Adobe-Acrobat32-Setup\Intune"
+Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat32-Setup\Microsoft Win32 Content Prep Tool.zip"
 Write-Host ".ZIP extracted."
 
 Start-Sleep -Seconds 5
@@ -99,7 +99,7 @@ Write-Host ""
 
 Write-Host "All necessary installation files to package Adobe Acrobat in Microsoft Intune have been downloaded to:
 
-$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup."
+$env:USERPROFILE\Downloads\Adobe-Acrobat32-Setup."
 Start-Sleep -Seconds 2
 Write-Host ''
 Write-Host ""
