@@ -30,6 +30,10 @@ $url2 = "https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/misc/Cust
 $outputfile2 = "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\Customization Wizard 2200320310.exe"
 $webclient2.DownloadFile($url2, $outputfile2)
 
+Write-Host '->  Customization Wizard installeren...'
+Start-Process -FilePath "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\Customization Wizard 2200320310.exe" -ArgumentList "/quiet", "/norestart" -Wait
+
+
 Start-Sleep -Seconds 3
 
 Write-Host '->  Microsoft Intune Win32 Content Prep Tool binnenhalen van GitHub server(s)...'
