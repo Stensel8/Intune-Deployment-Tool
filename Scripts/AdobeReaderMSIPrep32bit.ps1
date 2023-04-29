@@ -13,12 +13,12 @@ New-Item -ItemType Directory "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\" -
 Set-Location "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\"
 
 $webclient = New-Object System.Net.WebClient
-$url = "https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2300120143/AcroRdrDC2300120143_nl_NL.exe"
-$outputfile = "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\AcroRdrDC2300120143_nl_NL.exe"
+$url = "https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2300120064/AcroRdrDC2300120064_nl_NL.exe"
+$outputfile = "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\AcroRdrDC2300120064_nl_NL.exe"
 $webclient.DownloadFile($url, $outputfile)
 
 Write-Host ".EXE bestand uitpakken naar losse bestanden..."
-Start-Process -FilePath "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\AcroRdrDC2300120143_nl_NL.exe" -ArgumentList "-sfx_o`"$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup`" -sfx_ne -quiet" -Wait
+Start-Process -FilePath "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\AcroRdrDC2300120064_nl_NL.exe" -ArgumentList "-sfx_o`"$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup`" -sfx_ne -quiet" -Wait
 Write-Host ".EXE bestand uitgepakt."
 
 
