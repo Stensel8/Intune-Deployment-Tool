@@ -45,7 +45,6 @@ Write-Host "Extracting .EXE file to individual files..."
 Start-Process -FilePath "$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup\AcroRdrDC2300120064_nl_NL.exe" -ArgumentList "-sfx_o`"$env:USERPROFILE\Downloads\Adobe-Acrobat-Setup`" -sfx_ne -quiet" -Wait
 Write-Host ".EXE file extracted to the downloadfolder."
 
-
 Write-Host ''
 Write-Host ''
 Write-Host '->  Downloading Customization Wizard from Adobe server(s)...'
