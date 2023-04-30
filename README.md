@@ -12,3 +12,6 @@ Your Anti-Virus may flag this program as a Virus, Malware or PUA. This is becaus
 [32-bit VirusTotal page](https://www.virustotal.com/gui/file/1df17f9439e852e7fee4ac4ffed0d87336059fdf9e2f8e9b8e4252fc6aeee9a7)
 
 [64-bit VirusTotal page](https://www.virustotal.com/gui/file/f1cf749407e1cd5b7d2aed3287621c33c6eefc86bb0b3c41e00717c30628211c)
+
+
+[![PSScriptAnalyzer](https://github.com/Stensel8/Acrobat-Intune-Deploy/actions/workflows/powershell.yml/badge.svg?branch=main&event=push)](https://github.com/Stensel8/Acrobat-Intune-Deploy/actions/workflows/powershell.yml)
