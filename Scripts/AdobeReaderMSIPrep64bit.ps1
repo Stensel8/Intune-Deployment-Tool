@@ -25,13 +25,13 @@ choco install 7zip -y
 
 
 # Download the Adobe Acrobat Reader DC .exe installer to the Downloads folder.
-Write-Host ''
+Write-Host ""
 Write-Host ""
 Write-Host ""
 Write-Host ""
 
-Write-Host '->  Downloading installation files from Adobe server(s)...'
-Write-Host ''
+Write-Host "->  Downloading installation files from Adobe server(s)..."
+Write-Host ""
 
 New-Item -ItemType Directory "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\" -Force | Out-Null
 Set-Location "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\"
@@ -45,9 +45,9 @@ Write-Host "Extracting .EXE file to individual files..."
 Start-Process -FilePath "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDC2300120064_nl_NL.exe" -ArgumentList "-sfx_o`"$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup`" -sfx_ne -quiet" -Wait
 Write-Host ".EXE file extracted to the downloadfolder."
 
-Write-Host ''
-Write-Host ''
-Write-Host '->  Downloading Customization Wizard from Adobe server(s)...'
+Write-Host ""
+Write-Host ""
+Write-Host "->  Downloading Customization Wizard from Adobe server(s)..."
 $webclient2 = New-Object System.Net.WebClient
 $url2 = "https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/misc/CustWiz2200320310_en_US_DC.exe"
 $outputfile2 = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\Customization Wizard 2200320310.exe"
@@ -74,12 +74,12 @@ Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$msiFile`" /qn /norest
 
 
 Start-Sleep -Seconds 3
-Write-Host ''
-Write-Host ''
-Write-Host ''
-Write-Host ''
-Write-Host '->  Downloading Microsoft Intune Win32 Content Prep Tool from GitHub server(s)...'
-Write-Host ''
+Write-Host ""
+Write-Host ""
+Write-Host ""
+Write-Host ""
+Write-Host "->  Downloading Microsoft Intune Win32 Content Prep Tool from GitHub server(s)..."
+Write-Host ""
 $webclient3 = New-Object System.Net.WebClient
 $url3 = "https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/archive/refs/heads/master.zip"
 $outputfile3 = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\Microsoft Win32 Content Prep Tool.zip"
@@ -91,8 +91,8 @@ Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\Microsoft Wi
 Write-Host ".ZIP extracted."
 
 Start-Sleep -Seconds 5
-Write-Host ''
-Write-Host ''
+Write-Host ""
+Write-Host ""
 Write-Host ""
 Write-Host ""
 Write-Host ""
@@ -101,7 +101,7 @@ Write-Host "All necessary installation files to package Adobe Acrobat in Microso
 
 $env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup."
 Start-Sleep -Seconds 2
-Write-Host ''
+Write-Host ""
 Write-Host ""
 Write-Host ""
 Write-Host "Opening the Adobe Customization Wizard.."
