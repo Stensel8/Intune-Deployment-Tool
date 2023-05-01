@@ -20,7 +20,7 @@ if (!(Get-Command choco -ErrorAction SilentlyContinue)) {
 }
 
 # Check if 7-Zip is installed, and if not, install 7-Zip via Chocolatey.
-# We need 7-Zip to compress and decompress files since Windows Explorer doesn"t know how to unpack an .exe.
+# We need 7-Zip to compress and decompress files since Windows Explorer doesn't know how to unpack an .exe.
 choco install 7zip -y
 
 
