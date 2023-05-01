@@ -3,7 +3,10 @@ As some of you may have noticed, Adobe hasn't exactly made it easier to deploy A
 
 [Adobe Acrobat Release notes](https://helpx.adobe.com/acrobat/release-note/release-notes-acrobat-reader.html)
 
-[Latest Release](https://github.com/Stensel8/Acrobat-Intune-Deploy/releases)
+[Latest release of Adobe Acrobat Reader (64-bit)](https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120064/AcroRdrDCx642300120064_nl_NL.exe)
+      [Alternative link](https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120064/AcroRdrDCx642300120064_nl_NL.exe)
+
+[Latest Release of script](https://github.com/Stensel8/Acrobat-Intune-Deploy/releases)
 
 
 # NOTE:
