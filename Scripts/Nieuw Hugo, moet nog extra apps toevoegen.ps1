@@ -1,24 +1,30 @@
+do 
+{
+
 # Checking if the script is being run with admin rights. If not, the script will automatically be run again as admin.
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     Start-Process powershell.exe "-File `"$PSCommandPath`"" -Verb RunAs
     Exit
   }
 
-
+  1..1 | ForEach-Object{"`n"}
   Write-Host "Menu:"
-  1..3 | ForEach-Object{"`n"}
+  1..2 | ForEach-Object{"`n"}
 
 Write-Host "1. Choice 1: Google Chrome (64-bit)"
 Write-Host "2. Choice 2: Adobe Acrobat Reader DC - Default image (64-bit)"
 #Write-Host "3. Choice 3: Adobe Acrobat Reader DC - Customized image (64-bit)"
 Write-Host "4. Choice 4: Citrix Workspace (64-bit)"
-$choice = Read-Host "Enter the number of choice"
+1..1 | ForEach-Object{"`n"}
+$choice = Read-Host "Enter the number of your choice"
+
 
 switch ($choice) {
 
     "1" {
         # Execute the code for Choice 1
         Write-Host "You have choosen option 1..."
+        Write-Host "Google Chrome Standalone Enterprise Installer will be downloaded and packaged..."
         Start-Sleep -seconds 2
    
     $intunePath = "$env:SystemDrive\Intune"
@@ -74,13 +80,27 @@ switch ($choice) {
     
 
 
-    Start-Process C:\Intune\IntuneWinAppUtil.exe -ArgumentList "-c `"$sourcePath`" -s GoogleChromeStandaloneEnterprise64.msi -o `"$outputPath`"" -Force -Wait
+    Start-Process C:\Intune\IntuneWinAppUtil.exe -ArgumentList "-c `"$ChromeSourcePath`" -s GoogleChromeStandaloneEnterprise64.msi -o `"$ChromeOutputPath`""  -Wait
+    1..2 | ForEach-Object{"`n"}
+    Write-Host "Google Chrome has been packaged successfully!"
      }
 
     "2" {
-        # Execute code for Choice 2
-        Write-Host "You have choosen option 2..."
-         $intunePath = "$env:SystemDrive\Intune"
+      # Execute code for Choice 2
+    Write-Host "You have chosen option 2...
+    Adobe Acrobat Reader DC - Default image (64-bit) will be downloaded and packaged...
+
+    NOTE: This is an .exe file, not an .msi file. This means that Microsoft Intune might not be able to support all the parameters that are available for this application."
+
+    $choice = Read-Host "Do you want to continue using the .exe file for installation? (Y/N)"
+    if ($choice -eq "Y") {
+        $intunePath = "$env:SystemDrive\Intune"
+    }
+    else {
+        Write-Host "Aborting script."
+        return
+    }
+
 
     if  (Test-Path $intunePath) {
      Write-Host "Folder already exists..."
@@ -110,14 +130,14 @@ switch ($choice) {
     Copy-Item -Path C:\Intune\Microsoft-Win32-Content-Prep-Tool-master\* -Destination $intunePath -PassThru
     Remove-Item -Path C:\Intune\Microsoft-Win32-Content-Prep-Tool-master\ -Force -Recurse
 
-    $sourcePath = "$env:SystemDrive\Intune\Adobe\Source"
-    $outputPath = "$env:SystemDrive\Intune\Adobe\Output"
-    if ( (Test-Path $sourcePath) -or (Test-Path $outputPath))  {
+    $Adobe_default_SourcePath = "$env:SystemDrive\Intune\Adobe\Source"
+    $Adobe_default_OutputPath = "$env:SystemDrive\Intune\Adobe\Output"
+    if ( (Test-Path $Adobe_default_SourcePath) -or (Test-Path $Adobe_default_OutputPath))  {
         Write-Host "Folder already exists.... Using that folder."
     } 
     else {
-        New-Item -ItemType directory -Path $sourcePath
-        New-Item -ItemType directory -Path $outputPath
+        New-Item -ItemType directory -Path $Adobe_default_SourcePath
+        New-Item -ItemType directory -Path $Adobe_default_OutputPath
     }
 
      
@@ -143,7 +163,9 @@ switch ($choice) {
     Write-Host 'Download finished, now beginning to package the application...'
     Start-Sleep -seconds 2
 
-    Start-Process C:\Intune\IntuneWinAppUtil.exe -ArgumentList "-c `"$sourcePath`" -s AcroRdrDCx642300120064_nl_NL.exe -o `"$outputPath`"" -Force -Wait
+    Start-Process C:\Intune\IntuneWinAppUtil.exe -ArgumentList "-c `"$Adobe_default_SourcePath`" -s AcroRdrDCx642300120064_nl_NL.exe -o `"$Adobe_default_OutputPath`""  -Wait
+    1..2 | ForEach-Object{"`n"}
+    Write-Host "Adobe Acrobat Reader DC has been packaged successfully!"
     }
 
     "4" {
@@ -185,7 +207,7 @@ Remove-Item -Path C:\Intune\Microsoft-Win32-Content-Prep-Tool-master\ -Force -Re
 
 $CitrixSourcePath = "$env:SystemDrive\Intune\CitrixWorkspace\Source"
 $CitrixOutputPath = "$env:SystemDrive\Intune\CitrixWorkspace\Output"
-if ( (Test-Path $ChromeSourcePath) -or (Test-Path $ChromeOutputPath))  {
+if ( (Test-Path $CitrixSourcePath) -or (Test-Path $CitrixSourcePath))  {
     Write-Host "Folder already exists."
 } 
 else {
@@ -204,11 +226,13 @@ Start-Sleep -seconds 2
 
 
 
-Start-Process C:\Intune\IntuneWinAppUtil.exe -ArgumentList "-c `"$CitrixSourcePath`" -s CitrixWorkspaceApp.exe -o `"$CitrixOutputPath`"" -Force -Wait
+Start-Process C:\Intune\IntuneWinAppUtil.exe -ArgumentList "-c `"$CitrixSourcePath`" -s CitrixWorkspaceApp.exe -o `"$CitrixOutputPath`""  -Wait
+1..2 | ForEach-Object{"`n"}
+Write-Host "Citrix Workspace has been packaged successfully!"
  }}
 
  1..5 | ForEach-Object{"`n"}
-
-
-$null = Read-Host "Press Enter to end the script."
-
+# Prompt the user to run again
+$RunAgain = Read-Host "Do you want to run the script again? (Y/N)"
+} while ($RunAgain -eq "Y")
+```
