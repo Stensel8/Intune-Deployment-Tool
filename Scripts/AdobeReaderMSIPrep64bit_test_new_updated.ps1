@@ -1,5 +1,5 @@
-# Checking if the script is being run with admin rights. If not, the script will automatically be run again as admin.
-if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+  # Checking if the script is being run with admin rights. If not, the script will automatically be run again as admin.
+  if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     Start-Process powershell.exe "-File `"$PSCommandPath`"" -Verb RunAs
     Exit
   }
@@ -25,13 +25,13 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   
   
   # Download the Adobe Acrobat Reader DC .exe installer to the Downloads folder.
-  Write-Host ''
+  Write-Host ""
   Write-Host ""
   Write-Host ""
   Write-Host ""
   
-  Write-Host '->  Downloading installation files from Adobe server(s)...'
-  Write-Host ''
+  Write-Host "->  Downloading installation files from Adobe server(s)..."
+  Write-Host ""
   
   New-Item -ItemType Directory "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\" -Force | Out-Null
   Set-Location "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\"
@@ -51,6 +51,7 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
           Start-BitsTransfer -Source $fallbackUrl -Destination $outputPath -ErrorAction Stop
       } catch {
           Write-Output "Failed to download from fallback URL: $($_.Exception.Message)"
+          Write-Output "Failed to download Adobe Acrobat Reader DC from both primary and fallback URLs. Exiting script."
           exit 1
       }
   }
@@ -62,19 +63,41 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   Start-Process -FilePath "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDC2300120064_nl_NL.exe" -ArgumentList "-sfx_o`"$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup`" -sfx_ne -quiet" -Wait
   Write-Host ".EXE file extracted to the downloadfolder."
   
-  Write-Host ''
-  Write-Host ''
-  Write-Host '->  Downloading Customization Wizard from Adobe server(s)...'
-  $webclient2 = New-Object System.Net.WebClient
-  $url2 = "https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/misc/CustWiz2200320310_en_US_DC.exe"
-  $outputfile2 = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\Customization Wizard 2200320310.exe"
-  $webclient2.DownloadFile($url2, $outputfile2)
+
+
+
+  #Write-Host ''
+  #Write-Host ''
+  #Write-Host '->  Downloading Customization Wizard from Adobe server(s)...'
+
+  $sourceUrl2   = "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/misc/CustWiz2200320310_en_US_DC.exe"
+  $fallbackUrl2 = "https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/misc/CustWiz2200320310_en_US_DC.exe"
+  $outputPath2  = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\CustWiz2200320310_en_US_DC.exe"
+ 
+  Write-Output "Downloading Adobe Acrobat Reader DC Customization Wizard from primary URL..."
+
+  try {
+    Start-BitsTransfer -Source $sourceUrl2 -Destination $outputPath2 -ErrorAction Stop
+} catch {
+    Write-Output "Failed to download from primary URL: $($_.Exception.Message)"
+    Write-Output "Downloading Acrobat Customization Wizard from fallback URL..."
+    try {
+        Start-BitsTransfer -Source $fallbackUrl2 -Destination $outputPath2 -ErrorAction Stop
+    } catch {
+        Write-Output "Failed to download from fallback URL: $($_.Exception.Message)"
+        Write-Output "Failed to download Acrobat Customization Wizard from both primary and fallback URLs. Exiting script."
+        exit 1
+    }
+}
+
+
   
-  $source = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\Customization Wizard 2200320310.exe"
-  $destination = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup"
+  $source = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\CustWiz2200320310_en_US_DC.exe"
+  $destination = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\"
   
   # Extract the .msi file from the .exe file using 7-Zip.
   & "C:\Program Files\7-Zip\7z.exe" e "$source" "*.msi" -o"$destination"
+  
   
   # Delete the original .exe file.
   Remove-Item "$source"
@@ -85,8 +108,8 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   Write-Host ""
   Write-Host "Installing the Adobe Customization software..."
   Start-Sleep -Seconds 2
-  $msiFile = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\CustWiz.msi"
-  Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$msiFile`" /qn /norestart" -Wait
+  $Custwiz_msi = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\CustWiz.msi"
+  Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$Custwiz_msi`" /qn /norestart" -Wait
   
   
   
@@ -141,3 +164,4 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   }
   exit
   
+
