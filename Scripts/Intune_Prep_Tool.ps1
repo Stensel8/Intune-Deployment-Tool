@@ -235,6 +235,7 @@ Write-Host "Citrix Workspace has been packaged successfully!"
 # Prompt the user to run again
 $RunAgain = Read-Host "Do you want to run the script again? (Y/N)"
 } while ($RunAgain -eq "Y")
-```
 Write-Host "The script is restarting..."
 Start-Sleep -Seconds 3
+Clear-Host
+```
