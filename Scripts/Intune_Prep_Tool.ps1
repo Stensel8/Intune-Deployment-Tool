@@ -1,5 +1,5 @@
-do 
-{
+do {
+
 
 # Checking if the script is being run with admin rights. If not, the script will automatically be run again as admin.
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
@@ -232,10 +232,16 @@ Write-Host "Citrix Workspace has been packaged successfully!"
  }}
 
  1..5 | ForEach-Object{"`n"}
+
+
+
 # Prompt the user to run again
 $RunAgain = Read-Host "Do you want to run the script again? (Y/N)"
+
+# If the user wants to run again, clear the console and restart the script
+if ($RunAgain -eq "Y") {
+    Write-Host "The script is restarting..."
+    Start-Sleep -Seconds 3
+    Clear-Host
+}
 } while ($RunAgain -eq "Y")
-Write-Host "The script is restarting..."
-Start-Sleep -Seconds 3
-Clear-Host
-```
