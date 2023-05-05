@@ -13,3 +13,6 @@ As some of you may have noticed, Adobe hasn't exactly made it easier to deploy A
 
 # NOTE:
 Your Anti-Virus may flag this program as a Virus, Malware or PUA. This is because of the fact that the program is downloading and/or installing other executables. 
+
+[![Quality Scan](https://github.com/Stensel8/Intune-Deployment-Tool/actions/workflows/Quality%20Scan.yml/badge.svg)](https://github.com/Stensel8/Intune-Deployment-Tool/actions/workflows/Quality%20Scan.yml)
+[![Security Scan](https://github.com/Stensel8/Intune-Deployment-Tool/actions/workflows/Security%20Scan.yml/badge.svg)](https://github.com/Stensel8/Intune-Deployment-Tool/actions/workflows/Security%20Scan.yml)
