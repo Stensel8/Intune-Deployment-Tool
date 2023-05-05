@@ -216,7 +216,7 @@ else {
 }
 
  
-$Link = "https://downloads.citrix.com/21794/CitrixWorkspaceApp.exe?__gda__=exp=1683106122~acl=/*~hmac=05b3e00ed3c34409e6dae7e733b9a44aea921fb24d6652c0c68d470ec871dce3" 
+$Link = "https://downloadplugins.citrix.com/Windows/CitrixWorkspaceApp.exe" 
 $fileName = "$env:SystemDrive\Intune\CitrixWorkspace\Source\CitrixWorkspaceApp.exe"
 
 Write-Host 'Starting downloading the Citrix Workspace application...'
@@ -236,3 +236,5 @@ Write-Host "Citrix Workspace has been packaged successfully!"
 $RunAgain = Read-Host "Do you want to run the script again? (Y/N)"
 } while ($RunAgain -eq "Y")
 ```
+Write-Host "The script is restarting..."
+Start-Sleep -Seconds 3
