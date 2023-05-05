@@ -141,9 +141,9 @@ switch ($choice) {
     }
 
      
-    $sourceUrl = "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120064/AcroRdrDCx642300120064_nl_NL.exe"
-    $fallbackUrl = "https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120064/AcroRdrDCx642300120064_nl_NL.exe" 
-    $fileName = "$env:SystemDrive\Intune\Adobe\Source\AcroRdrDCx642300120064_nl_NL.exe"
+    $sourceUrl = "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120064/AcroRdrDCx642300120143_nl_NL.exe"
+    $fallbackUrl = "https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120064/AcroRdrDCx642300120143_nl_NL.exe" 
+    $fileName = "$env:SystemDrive\Intune\Adobe\Source\AcroRdrDCx642300120143_nl_NL.exe"
     
      # Download the file using the primary URL
   Write-Output "Downloading Adobe Acrobat Reader DC..."
