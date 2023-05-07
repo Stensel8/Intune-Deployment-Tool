@@ -14,9 +14,13 @@ Write-Output ""
 Start-Sleep -Seconds 5
 # Import Chocolately and use it as package manager.
 if (!(Get-Command choco -ErrorAction SilentlyContinue)) {
-Set-ExecutionPolicy Bypass -Scope Process -Force
-[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
-Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+  Set-ExecutionPolicy Bypass -Scope Process -Force
+  [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
+  $url = 'https://chocolatey.org/install.ps1'
+  $path = Join-Path $env:TEMP 'install.ps1'
+  Start-BitsTransfer -Source $url -Destination $path
+  Unblock-File $path
+  & $path
 }
 
 # Check if 7-Zip is installed, and if not, install 7-Zip via Chocolatey.
