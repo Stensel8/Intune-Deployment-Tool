@@ -6,7 +6,7 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 
 
   Write-Host "We need 7-Zip to compress and decompress files since Windows Explorer doesn't know how to unpack an .exe.
-  
+
   Checking if 7-Zip is installed, and if not, 7-Zip will automatically be installed."
 Write-Host ""
 Write-Host ""
