@@ -26,35 +26,35 @@ switch ($choice) {
         Write-Host "You have choosen option 1..."
         Write-Host "Google Chrome Standalone Enterprise Installer will be downloaded and packaged..."
         Start-Sleep -seconds 2
-   
+
     $intunePath = "$env:SystemDrive\Intune"
     if  (Test-Path $intunePath) {
      Write-Host "Folder already exists..."
-    } 
-    else { 
+    }
+    else {
        New-Item -ItemType directory -Path $intunePath
-  
+
     }
 
 
     $ZipFile = "$intunePath\temp.zip"
     New-Item $ZipFile -ItemType File -Force
-    
-    $RepositoryZipUrl = "https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/archive/refs/heads/master.zip" 
+
+    $RepositoryZipUrl = "https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/archive/refs/heads/master.zip"
     # Download the .zip file
     Write-Host 'Starting downloading the GitHub Repository'
     Start-BitsTransfer -Source $RepositoryZipUrl -Destination $ZipFile
     Write-Host 'Download finished, now beginning to package the application...'
     Start-Sleep -seconds 2
-    
 
-    
-    
+
+
+
     # Extract the .zip file
     Write-Host 'Starting unzipping the GitHub Repository locally'
     Expand-Archive -Path $ZipFile -DestinationPath $intunePath -Force
     Write-Host 'Unzip finished'
-    Remove-Item -Path $ZipFile -Force 
+    Remove-Item -Path $ZipFile -Force
 
     Copy-Item -Path C:\Intune\Microsoft-Win32-Content-Prep-Tool-master\* -Destination $intunePath -PassThru
     Remove-Item -Path C:\Intune\Microsoft-Win32-Content-Prep-Tool-master\ -Force -Recurse
@@ -63,21 +63,21 @@ switch ($choice) {
     $ChromeOutputPath = "$env:SystemDrive\Intune\GoogleChrome\Output"
     if ( (Test-Path $ChromeSourcePath) -or (Test-Path $ChromeOutputPath))  {
         Write-Host "Folder already exists."
-    } 
+    }
     else {
         New-Item -ItemType directory -Path $ChromeSourcePath
         New-Item -ItemType directory -Path $ChromeOutputPath
     }
 
-     
-    $Link = "http://dl.google.com/edgedl/chrome/install/GoogleChromeStandaloneEnterprise64.msi" 
+
+    $Link = "http://dl.google.com/edgedl/chrome/install/GoogleChromeStandaloneEnterprise64.msi"
     $fileName = "$env:SystemDrive\Intune\GoogleChrome\Source\GoogleChromeStandaloneEnterprise64.msi"
-    
+
     Write-Host 'Starting downloading the Google Chrome MSI'
     Start-BitsTransfer -Source $Link -Destination $fileName
     Write-Host 'Download finished, now beginning to package the application...'
     Start-Sleep -seconds 2
-    
+
 
 
     Start-Process C:\Intune\IntuneWinAppUtil.exe -ArgumentList "-c `"$ChromeSourcePath`" -s GoogleChromeStandaloneEnterprise64.msi -o `"$ChromeOutputPath`""  -Wait
@@ -105,27 +105,27 @@ switch ($choice) {
     if  (Test-Path $intunePath) {
      Write-Host "Folder already exists..."
     }
-    
+
     else {
        New-Item -ItemType directory -Path $intunePath
-  
+
     }
 
     $ZipFile = "$intunePath\temp.zip"
     New-Item $ZipFile -ItemType File -Force
 
-    $RepositoryZipUrl = "https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/archive/refs/heads/master.zip" 
+    $RepositoryZipUrl = "https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/archive/refs/heads/master.zip"
     # Download the .zip file
     Write-Host 'Preparing to download the GitHub Repository'
     Invoke-WebRequest  -Uri $RepositoryZipUrl -OutFile $ZipFile
     Write-Host 'Download finished'
 
-    
+
     # Extract the .zip file
     Write-Host 'Starting unzipping the GitHub Repository locally'
     Expand-Archive -Path $ZipFile -DestinationPath $intunePath -Force
     Write-Host 'Unzip finished'
-    Remove-Item -Path $ZipFile -Force 
+    Remove-Item -Path $ZipFile -Force
 
     Copy-Item -Path C:\Intune\Microsoft-Win32-Content-Prep-Tool-master\* -Destination $intunePath -PassThru
     Remove-Item -Path C:\Intune\Microsoft-Win32-Content-Prep-Tool-master\ -Force -Recurse
@@ -134,17 +134,17 @@ switch ($choice) {
     $Adobe_default_OutputPath = "$env:SystemDrive\Intune\Adobe\Output"
     if ( (Test-Path $Adobe_default_SourcePath) -or (Test-Path $Adobe_default_OutputPath))  {
         Write-Host "Folder already exists.... Using that folder."
-    } 
+    }
     else {
         New-Item -ItemType directory -Path $Adobe_default_SourcePath
         New-Item -ItemType directory -Path $Adobe_default_OutputPath
     }
 
-     
+
     $sourceUrl = "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120064/AcroRdrDCx642300120143_nl_NL.exe"
-    $fallbackUrl = "https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120064/AcroRdrDCx642300120143_nl_NL.exe" 
+    $fallbackUrl = "https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120064/AcroRdrDCx642300120143_nl_NL.exe"
     $fileName = "$env:SystemDrive\Intune\Adobe\Source\AcroRdrDCx642300120143_nl_NL.exe"
-    
+
      # Download the file using the primary URL
   Write-Output "Downloading Adobe Acrobat Reader DC..."
   try {
@@ -177,8 +177,8 @@ switch ($choice) {
     if  (Test-Path $intunePath) {
     Write-Host "Folder already exists..."
 
-    } 
-    else { 
+    }
+    else {
     New-Item -ItemType directory -Path $intunePath
 
     }
@@ -187,7 +187,7 @@ switch ($choice) {
     $ZipFile = "$intunePath\temp.zip"
     New-Item $ZipFile -ItemType File -Force
 
-    $RepositoryZipUrl = "https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/archive/refs/heads/master.zip" 
+    $RepositoryZipUrl = "https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/archive/refs/heads/master.zip"
     # Download the .zip file
     Write-Host 'Starting downloading the GitHub Repository'
     Start-BitsTransfer -Source $RepositoryZipUrl -Destination $ZipFile
@@ -200,7 +200,7 @@ switch ($choice) {
 Write-Host 'Starting to unzip the GitHub Repository locally'
 Expand-Archive -Path $ZipFile -DestinationPath $intunePath -Force
 Write-Host 'Unzip finished'
-Remove-Item -Path $ZipFile -Force 
+Remove-Item -Path $ZipFile -Force
 
 Copy-Item -Path C:\Intune\Microsoft-Win32-Content-Prep-Tool-master\* -Destination $intunePath -PassThru
 Remove-Item -Path C:\Intune\Microsoft-Win32-Content-Prep-Tool-master\ -Force -Recurse
@@ -209,14 +209,14 @@ $CitrixSourcePath = "$env:SystemDrive\Intune\CitrixWorkspace\Source"
 $CitrixOutputPath = "$env:SystemDrive\Intune\CitrixWorkspace\Output"
 if ( (Test-Path $CitrixSourcePath) -or (Test-Path $CitrixSourcePath))  {
     Write-Host "Folder already exists."
-} 
+}
 else {
     New-Item -ItemType directory -Path $CitrixSourcePath
     New-Item -ItemType directory -Path $CitrixOutputPath
 }
 
- 
-$Link = "https://downloadplugins.citrix.com/Windows/CitrixWorkspaceApp.exe" 
+
+$Link = "https://downloadplugins.citrix.com/Windows/CitrixWorkspaceApp.exe"
 $fileName = "$env:SystemDrive\Intune\CitrixWorkspace\Source\CitrixWorkspaceApp.exe"
 
 Write-Host 'Starting downloading the Citrix Workspace application...'
