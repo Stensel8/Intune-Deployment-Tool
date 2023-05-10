@@ -6,7 +6,7 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     Start-Process powershell.exe "-File `"$PSCommandPath`"" -Verb RunAs
     Exit
   }
-
+  Clear-Host
   1..1 | ForEach-Object{"`n"}
   Write-Output "Menu:"
   1..2 | ForEach-Object{"`n"}
