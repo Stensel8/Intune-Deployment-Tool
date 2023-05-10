@@ -1,5 +1,5 @@
-do {
-
+do
+{
 
 # Checking if the script is being run with admin rights. If not, the script will automatically be run again as admin.
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
@@ -141,9 +141,9 @@ switch ($choice) {
     }
 
 
-    $sourceUrl = "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120064/AcroRdrDCx642300120143_nl_NL.exe"
-    $fallbackUrl = "https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120064/AcroRdrDCx642300120143_nl_NL.exe"
-    $fileName = "$env:SystemDrive\Intune\Adobe\Source\AcroRdrDCx642300120143_nl_NL.exe"
+    $sourceUrl = "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120174/AcroRdrDCx642300120174_nl_NL.exe"
+    $fallbackUrl = "https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120174/AcroRdrDCx642300120174_nl_NL.exe"
+    $fileName = "$env:SystemDrive\Intune\Adobe\Source\AcroRdrDCx642300120174_nl_NL.exe"
 
      # Download the file using the primary URL
   Write-Output "Downloading Adobe Acrobat Reader DC..."
@@ -163,7 +163,7 @@ switch ($choice) {
     Write-Output 'Download finished, now beginning to package the application...'
     Start-Sleep -seconds 2
 
-    Start-Process C:\Intune\IntuneWinAppUtil.exe -ArgumentList "-c `"$Adobe_default_SourcePath`" -s AcroRdrDCx642300120064_nl_NL.exe -o `"$Adobe_default_OutputPath`""  -Wait
+    Start-Process C:\Intune\IntuneWinAppUtil.exe -ArgumentList "-c `"$Adobe_default_SourcePath`" -s AcroRdrDCx642300120174_nl_NL.exe -o `"$Adobe_default_OutputPath`""  -Wait
     1..2 | ForEach-Object{"`n"}
     Write-Output "Adobe Acrobat Reader DC has been packaged successfully!"
     }
@@ -232,16 +232,11 @@ Write-Output "Citrix Workspace has been packaged successfully!"
  }}
 
  1..5 | ForEach-Object{"`n"}
-
-
-
 # Prompt the user to run again
-$RunAgain = Read-Host "Do you want to run the script again? (Y/N)"
-
-# If the user wants to run again, clear the console and restart the script
-if ($RunAgain -eq "Y") {
-    Write-Output "The script is restarting..."
-    Start-Sleep -Seconds 3
-    Clear-Host
-}
-} while ($RunAgain -eq "Y")
+$RunAgain = Read-Host "Do you want to run the script again? (Y/N)".ToLower()
+if ($RunAgain -eq "y") {
+        Write-Output "Restarting the script..."
+        Start-Sleep -Seconds 3
+        Clear-Host
+    }
+} while ($RunAgain -eq "y")
