@@ -134,8 +134,8 @@ Invoke-Item -Path $destination
 
 # Cleaning up files...
 Start-Sleep -Seconds 2
-Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDCx642300120174_nl_NL.exe"
-Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\CustWiz.msi"
+Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDCx642300120174_nl_NL.exe" -Force -ErrorAction Ignore
+Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\CustWiz.msi" -Force -ErrorAction Ignore
 
 
 # Exit the script
