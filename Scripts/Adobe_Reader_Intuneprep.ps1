@@ -41,12 +41,12 @@ New-Item -ItemType Directory "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\"
 Set-Location "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\"
 
 $webclient = New-Object System.Net.WebClient
-$url = "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120064/AcroRdrDCx642300120064_nl_NL.exe"
-$outputfile = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDC2300120064_nl_NL.exe"
+$url = "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120174/AcroRdrDCx642300120174_nl_NL.exe"
+$outputfile = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDC2300120174_nl_NL.exe"
 $webclient.DownloadFile($url, $outputfile)
 
 Write-Output "Extracting .EXE file to individual files..."
-Start-Process -FilePath "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDC2300120064_nl_NL.exe" -ArgumentList "-sfx_o`"$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup`" -sfx_ne -quiet" -Wait
+Start-Process -FilePath "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDC2300120174_nl_NL.exe" -ArgumentList "-sfx_o`"$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup`" -sfx_ne -quiet" -Wait
 Write-Output ".EXE file extracted to the downloadfolder."
 
 Write-Output ""
