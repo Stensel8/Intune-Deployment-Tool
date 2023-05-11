@@ -40,13 +40,28 @@ Write-Output ""
 New-Item -ItemType Directory "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\" -Force | Out-Null
 Set-Location "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\"
 
-$webclient = New-Object System.Net.WebClient
-$url = "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120174/AcroRdrDCx642300120174_nl_NL.exe"
-$outputfile = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDC2300120174_nl_NL.exe"
-$webclient.DownloadFile($url, $outputfile)
+$sourceUrl = "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120174/AcroRdrDCx642300120174_nl_NL.exe"
+$fallbackUrl = "https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300120174/AcroRdrDCx642300120174_nl_NL.exe"
+$fileName = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDCx642300120174_nl_NL.exe"
+
+ # Download the file using the primary URL
+Write-Output "Downloading Adobe Acrobat Reader DC..."
+try {
+  Start-BitsTransfer -Source $sourceUrl -Destination $fileName
+} catch {
+  # Download the file using the fallback URL
+  Write-Output "Failed to download from primary server: $($_.Exception.Message)"
+  Write-Output "Downloading Adobe Acrobat Reader DC from fallback server..."
+  try {
+      Start-BitsTransfer -Source $fallbackUrl -Destination $fileName -ErrorAction Stop
+  } catch {
+      Write-Output "Failed to download from fallback server, are the downloadservers up-and-running?: $($_.Exception.Message)"
+      exit 1
+  }
+}
 
 Write-Output "Extracting .EXE file to individual files..."
-Start-Process -FilePath "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDC2300120174_nl_NL.exe" -ArgumentList "-sfx_o`"$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup`" -sfx_ne -quiet" -Wait
+Start-Process -FilePath "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDCx642300120174_nl_NL.exe" -ArgumentList "-sfx_o`"$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup`" -sfx_ne -quiet" -Wait
 Write-Output ".EXE file extracted to the downloadfolder."
 
 Write-Output ""
@@ -116,6 +131,12 @@ Start-Sleep -Seconds 1
 
 Start-Process -FilePath "C:\Program Files (x86)\Adobe\Acrobat Customization Wizard DC\CustWiz.exe"
 Invoke-Item -Path $destination
+
+# Cleaning up files...
+Start-Sleep -Seconds 2
+Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDCx642300120174_nl_NL.exe"
+Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\CustWiz.msi"
+
 
 # Exit the script
 Write-Output ""
