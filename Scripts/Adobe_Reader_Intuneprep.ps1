@@ -4,7 +4,6 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   Exit
 }
 
-
 Write-Output "We need 7-Zip to compress and decompress files since Windows Explorer doesn't know how to unpack an .exe.
 
 Checking if 7-Zip is installed, and if not, 7-Zip will automatically be installed."
@@ -137,6 +136,20 @@ Start-Sleep -Seconds 2
 Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDCx642300120174_nl_NL.exe" -Force -ErrorAction Ignore
 Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\CustWiz.msi" -Force -ErrorAction Ignore
 
+
+# Define the source and destination paths for the files
+$Custom_MST = "https://github.com/Stensel8/Intune-Deployment-Tool/raw/main/Resources/AcroPro.mst"
+$Custom_INI = "https://raw.githubusercontent.com/Stensel8/Intune-Deployment-Tool/main/Resources/setup.ini"
+$destinationPath = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\"
+
+# Check if the destination folder exists, and create it if it doesn't
+if (-not (Test-Path -Path $destinationPath)) {
+  New-Item -ItemType Directory -Path $destinationPath | Out-Null
+}
+
+# Start the BITS transfer for each file
+Start-BitsTransfer -Source $Custom_MST -Destination $destinationPath
+Start-BitsTransfer -Source $Custom_INI -Destination $destinationPath
 
 # Exit the script
 Write-Output ""
