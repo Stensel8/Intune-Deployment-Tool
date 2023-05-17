@@ -1,6 +1,6 @@
 @{
-    Root = 'C:\GitHub\Intune-Deployment-Tool\Scripts\Adobe_Reader_Intuneprep.ps1'
-    OutputPath = 'C:\GitHub\Intune-Deployment-Tool'
+    Root = 'C:\Users\stent\Documents\GitHub\Acrobat-Intune-Deploy\Scripts\Adobe_Reader_Intuneprep.ps1'
+    OutputPath = 'C:\Users\stent\Documents\GitHub\Acrobat-Intune-Deploy\Releases'
     Package = @{
         Enabled = $true
         Obfuscate = $false
@@ -12,7 +12,7 @@
         ProductVersion = '1.1.3'
         Copyright = 'Stensel8'
         RequireElevation = $true
-        ApplicationIconPath = 'C:\Github\Intune-Deployment-Tool\Favicon.ico'
+        ApplicationIconPath = 'C:\Users\stent\Documents\GitHub\Acrobat-Intune-Deploy\favicon.ico'
         PackageType = 'Console'
 
     }
