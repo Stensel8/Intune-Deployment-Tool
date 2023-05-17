@@ -10,45 +10,24 @@ $Installation_directory = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup"
 # Prompt the user for customization preference.
 $customizationChoice = Read-Host "Do you want the ability to customize the Adobe Acrobat installer? (y/n)
 
-Note: This process will use 7-zip in the background to compress and decompress files. If you don't have 7-zip installed, it will be installed automatically."
+Note: This process will use 7-zip in the background to compress and decompress files.
+If you don't have 7-zip installed, it will be installed automatically. (y/n default is n)"
 
 if ($customizationChoice -eq "y") {
   Write-Output ""
-  Write-Output "We need 7-Zip to compress and decompress files since Windows Explorer doesn't know how to unpack
-and silently install the Adobe customization software."
+  Write-Output "Silently installing 7-Zip. (if not already installed)"
   Write-Output ""
   Write-Output ""
   Write-Output ""
   Start-Sleep -Seconds 5
 
-  # Download the 7-Zip silently.
   # We need 7-Zip to compress and decompress files since Windows Explorer doesn't know how to unpack and silently install the Adobe customization software.
-
-  $installerUrl = "https://www.7-zip.org/a/7z2201-x64.exe"  # Replace with the URL to the 7-Zip installer
-  $installerPath = "$env:TEMP\7z2201-x64.exe"  # Path where the installer will be downloaded and saved
-  $outputPath = "C:\Program Files\7-Zip"  # Path where 7-Zip will be installed
-
-  # Download the installer
-  $webClient = New-Object System.Net.WebClient
-  $webClient.DownloadFile($installerUrl, $installerPath)
-
-  # Install 7-Zip silently
-  $arguments = "/S /D=`"$outputPath`""  # Arguments for silent installation and specifying the installation path
-  $process = Start-Process -FilePath $installerPath -ArgumentList $arguments -Wait -PassThru
-
-  if ($process.ExitCode -eq 0) {
-      Write-Host "7-Zip Installation completed successfully."
-  } else {
-      Write-Host "7-Zip Installation failed. Exit code: $($process.ExitCode)."
-  }
-
-  # Clean up the installer file
-  Remove-Item $installerPath -Force
+  # Download the 7-Zip silently.
+  $exitCode = (Start-Process -FilePath msiexec.exe -ArgumentList "/i https://www.7-zip.org/a/7z2201-x64.msi /qn /norestart" -Wait -PassThru).ExitCode
+  if ($exitCode -eq 0) { "Installation succeeded!" } else { "Installation failed! Exit code: $exitCode" }
 
 
-
-
-  # Download the Adobe Customization software silently because we need it to customize the Adobe Reader DC installation.
+ # Download the Adobe Customization software from Adobe server(s).
   Write-Output ""
   Write-Output ""
   Write-Output "-> Downloading Customization Wizard from Adobe server(s)..."
@@ -56,27 +35,26 @@ and silently install the Adobe customization software."
   $url3 = "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/misc/CustWiz2200320310_en_US_DC.exe"
   $outputfile = Join-Path $Installation_directory "Customization Wizard 2200320310.exe"
 
-  $webClient = New-Object System.Net.WebClient
-
   try {
-      $webClient.DownloadFile($url2, $outputfile)
+      Import-Module BitsTransfer -ErrorAction Stop
+      Start-BitsTransfer -Source $url2 -Destination $outputfile -ErrorAction Stop
   } catch {
       Write-Output "Download from the primary server failed. Attempting to download from the fallback server..."
 
       try {
-          $webClient.DownloadFile($url3, $outputfile)
+          Start-BitsTransfer -Source $url3 -Destination $outputfile -ErrorAction Stop
       } catch {
           Write-Output "Download from the fallback server also failed. Unable to download the file."
       }
   }
 
-  $webClient.Dispose()
 
 
   $source = Join-Path $Installation_directory "Customization Wizard 2200320310.exe"
 
   # Extract the Customization software file from the .exe using 7-Zip.
-  & "C:\Program Files\7-Zip\7z.exe" e "$source" "*.msi" -o"$Installation_directory"
+  & "C:\Program Files\7-Zip\7z.exe" e "$source" "*.msi" -o"$Installation_directory" -aoa
+
 
   # Delete the original .exe file.
   Remove-Item $source -Force -ErrorAction SilentlyContinue
@@ -94,7 +72,12 @@ $process = Start-Process -FilePath "msiexec.exe" -ArgumentList $arguments -PassT
 if ($process.ExitCode -eq 0) {
     Write-Output "Installation completed successfully."
 } else {
-    Write-Output "Installation failed with exit code: $($process.ExitCode)."
+    Write-Output "Installation failed with exit code: $($process.ExitCode).
+
+NOTE: You may need to try again or use the Adobe Customization software manually."
+    Start-Sleep -Seconds 2
+    Write-Output "Script will now continue..."
+    Start-Sleep -Seconds 2
 }}
 
 # Download the Adobe Acrobat Reader DC .exe installer to the Downloads folder.
@@ -103,7 +86,7 @@ Write-Output ""
 Write-Output ""
 Write-Output ""
 
-Write-Output "->  Downloading installation files from Adobe server(s)..."
+Write-Output "->  Downloading Acrobat installation files from Adobe server(s)..."
 Write-Output ""
 
 New-Item -ItemType Directory "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\" -Force | Out-Null
@@ -140,17 +123,19 @@ Write-Output ""
 Write-Output ""
 Write-Output ""
 Write-Output ""
-Write-Output "->  Downloading Microsoft Intune Win32 Content Prep Tool from GitHub server(s)..."
+Write-Output "-> Downloading Microsoft Intune Win32 Content Prep Tool from GitHub server(s)..."
 Write-Output ""
-$webclient3 = New-Object System.Net.WebClient
-$url3 = "https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/archive/refs/heads/master.zip"
-$outputfile3 = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\Microsoft Win32 Content Prep Tool.zip"
-$webclient3.DownloadFile($url3, $outputfile3)
+$Intune_Prep_URL = "https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool/raw/master/IntuneWinAppUtil.exe"
+$Intune_Prep_Path = "$env:USERPROFILE\Downloads\IntunePrepTool\IntuneWinAppUtil.exe"
 
-Write-Output "Extracting Microsoft Win32 Content Prep Tool..."
-Expand-Archive -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\Microsoft Win32 Content Prep Tool.zip" -DestinationPath "$env:USERPROFILE\Downloads" -Force
-Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\Microsoft Win32 Content Prep Tool.zip" -Force -ErrorAction SilentlyContinue
-Write-Output ".ZIP extracted."
+$destinationFolder = Split-Path $Intune_Prep_Path -Parent
+if (-not (Test-Path -Path $destinationFolder)) {
+    New-Item -Path $destinationFolder -ItemType Directory -Force
+}
+
+Start-BitsTransfer -Source $Intune_Prep_URL -Destination $Intune_Prep_Path
+
+
 
 Start-Sleep -Seconds 5
 Write-Output ""
@@ -171,7 +156,8 @@ Write-Output ""
 $Customization_Wizard_Test = "$env:SystemDrive\Program Files (x86)\Adobe\Acrobat Customization Wizard DC\CustWiz.exe"
 
 if (Test-Path $Customization_Wizard_Test) {
-    $confirmation = Read-Host "Intune packaging will begin soon. Do you want to customize the Acrobat installer before packaging it to an .INTUNEWIN file? (Type 'y' or 'n')"
+    $confirmation = Read-Host "Intune packaging will begin soon.
+  Do you want to customize the Acrobat installer before packaging it to an .INTUNEWIN file? (y or n - default is n)"
 
     if ($confirmation.ToLower() -eq "y") {
         Write-Output "Opening the Adobe Customization Wizard.."
@@ -213,7 +199,8 @@ $Adobe_output_folder = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\INTUNEW
 
 # Start the packaging process
 Write-Output "OK, let's start packaging Adobe Acrobat Reader DC..."
-Start-Process "$env:USERPROFILE\Downloads\Microsoft-Win32-Content-Prep-Tool-master\IntuneWinAppUtil" -ArgumentList "-c $Installation_directory -s $Adobe_source_file -o $Adobe_output_folder -q" -Wait
+Write-Output ""
+Start-Process "$Intune_Prep_Path" -ArgumentList "-c $Installation_directory -s $Adobe_source_file -o $Adobe_output_folder -q" -Wait
 1..2 | ForEach-Object{"`n"}
 Write-Output "Adobe Acrobat Reader packaged succesfully, the package can be found in the INTUNEWIN folder."
 
