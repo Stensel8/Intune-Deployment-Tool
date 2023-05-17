@@ -170,18 +170,26 @@ if (Test-Path $Customization_Wizard_Test) {
         Start-Sleep -Seconds 1
         Start-Process -FilePath "C:\Program Files (x86)\Adobe\Acrobat Customization Wizard DC\CustWiz.exe"
         Invoke-Item -Path $Installation_directory
+
+        # Prompt the user to resume after customization
+        Read-Host "The script is currently paused. Waiting for the user to create custom .mst and .ini files.
+
+        Make sure to save the files in the following directory: $Installation_directory
+        Make sure that the .mst file is named 'AcroPro.mst' and the .ini file is named 'setup.ini'.
+
+        If you're ready, you can press Enter to continue..."
     }
-    else {
-        Write-Output ""
-        Write-Output "Customization is cancelled by user, script will now use the predefined SETUP and MST files..."
-        Start-Sleep -Seconds 2
-        $setup_ini = "https://github.com/Stensel8/Intune-Deployment-Tool/raw/main/Resources/setup.ini"
-        $AcroPro_mst = "https://github.com/Stensel8/Intune-Deployment-Tool/raw/main/Resources/AcroPro.mst"
-        (New-Object System.Net.WebClient).DownloadFile($setup_ini, "$Installation_directory\setup.ini")
-        (New-Object System.Net.WebClient).DownloadFile($AcroPro_mst, "$Installation_directory\AcroPro.mst")
-    }
+    else {}
 }
-else {}
+else {
+  Write-Output ""
+  Write-Output "Customization is cancelled by user, script will now use the predefined SETUP and MST files from GitHub..."
+  Start-Sleep -Seconds 2
+  $setup_ini = "https://github.com/Stensel8/Intune-Deployment-Tool/raw/main/Resources/setup.ini"
+  $AcroPro_mst = "https://github.com/Stensel8/Intune-Deployment-Tool/raw/main/Resources/AcroPro.mst"
+  (New-Object System.Net.WebClient).DownloadFile($setup_ini, "$Installation_directory\setup.ini")
+  (New-Object System.Net.WebClient).DownloadFile($AcroPro_mst, "$Installation_directory\AcroPro.mst")
+}
 
 
 
@@ -194,6 +202,9 @@ Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\CustWiz.msi"
 
 $Adobe_source_file = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\Acropro.msi"
 $Adobe_output_folder = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\INTUNEWIN"
+
+# Start the packaging process
+Write-Output "OK, let's start packaging Adobe Acrobat Reader DC..."
 Start-Process "$env:USERPROFILE\Downloads\Microsoft-Win32-Content-Prep-Tool-master\IntuneWinAppUtil" -ArgumentList "-c $Installation_directory -s $Adobe_source_file -o $Adobe_output_folder -q" -Wait
 1..2 | ForEach-Object{"`n"}
 Write-Output "Adobe Acrobat Reader packaged succesfully, the package can be found in the INTUNEWIN folder."
@@ -204,6 +215,6 @@ Write-Output "Adobe Acrobat Reader packaged succesfully, the package can be foun
 # Exit the script
 Write-Output ""
 Write-Output ""
-Write-Output "Script completed, the script will now close..."
+Write-Output "Script has completed, the script will now close..."
 Start-Sleep -Seconds 5
 Exit
