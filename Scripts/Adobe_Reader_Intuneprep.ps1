@@ -38,7 +38,7 @@ and silently install the Adobe customization software."
 
   # Check if 7-Zip is installed, and if not, install 7-Zip via Chocolatey.
   # We need 7-Zip to compress and decompress files since Windows Explorer doesn't know how to unpack and silently install the Adobe customization software.
-  choco install 7zip -y
+  choco install 7zip -y --force
 
   # Download the Adobe Customization software silently because we need it to customize the Adobe Reader DC installation.
   Write-Output ""
@@ -71,7 +71,7 @@ and silently install the Adobe customization software."
   & "C:\Program Files\7-Zip\7z.exe" e "$source" "*.msi" -o"$Installation_directory"
 
   # Delete the original .exe file.
-  Remove-Item $source
+  Remove-Item $source -Force -ErrorAction SilentlyContinue
 
 # Install the Adobe Customization software silently and suppress reboots.
 Write-Output ""
@@ -183,7 +183,7 @@ if (Test-Path $Customization_Wizard_Test) {
 }
 else {
   Write-Output ""
-  Write-Output "Customization is cancelled by user, script will now use the predefined SETUP and MST files from GitHub..."
+  Write-Output "Customization is currently not possible or cancelled by user, script will now use the predefined SETUP and MST files from GitHub..."
   Start-Sleep -Seconds 2
   $setup_ini = "https://github.com/Stensel8/Intune-Deployment-Tool/raw/main/Resources/setup.ini"
   $AcroPro_mst = "https://github.com/Stensel8/Intune-Deployment-Tool/raw/main/Resources/AcroPro.mst"
