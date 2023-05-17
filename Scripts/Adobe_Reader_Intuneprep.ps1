@@ -1,4 +1,4 @@
-# Checking if the script is being run with admin rights. If not, the script will automatically be run again as admin.
+﻿# Checking if the script is being run with admin rights. If not, the script will automatically be run again as admin.
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
   Start-Process powershell.exe -Verb RunAs -ArgumentList "-File `"$PSCommandPath`""
   Exit
@@ -160,26 +160,31 @@ Write-Output ""
 Write-Output ""
 
 
+$Customization_Wizard_Test = "$env:SystemDrive\Program Files (x86)\Adobe\Acrobat Customization Wizard DC\CustWiz.exe"
 
-$confirmation = Read-Host "Intune packaging will begin soon.
+if (Test-Path $Customization_Wizard_Test) {
+    $confirmation = Read-Host "Intune packaging will begin soon. Do you want to customize the Acrobat installer before packaging it to an .INTUNEWIN file? (Type 'y' or 'n')"
 
-Do you want to customize the Acrobat installer before packaging it to an .INTUNEWIN? (Type 'y' or 'n')"
-
-if ($confirmation.ToLower() -eq "y") {
-    Write-Output "Opening the Adobe Customization Wizard.."
-    Start-Sleep -Seconds 1
-    Start-Process -FilePath "C:\Program Files (x86)\Adobe\Acrobat Customization Wizard DC\CustWiz.exe"
-    Invoke-Item -Path $Installation_directory
+    if ($confirmation.ToLower() -eq "y") {
+        Write-Output "Opening the Adobe Customization Wizard.."
+        Start-Sleep -Seconds 1
+        Start-Process -FilePath "C:\Program Files (x86)\Adobe\Acrobat Customization Wizard DC\CustWiz.exe"
+        Invoke-Item -Path $Installation_directory
+    }
+    else {
+        Write-Output ""
+        Write-Output "Customization is cancelled by user, script will now use the predefined SETUP and MST files..."
+        Start-Sleep -Seconds 2
+        $setup_ini = "https://github.com/Stensel8/Intune-Deployment-Tool/raw/main/Resources/setup.ini"
+        $AcroPro_mst = "https://github.com/Stensel8/Intune-Deployment-Tool/raw/main/Resources/AcroPro.mst"
+        (New-Object System.Net.WebClient).DownloadFile($setup_ini, "$Installation_directory\setup.ini")
+        (New-Object System.Net.WebClient).DownloadFile($AcroPro_mst, "$Installation_directory\AcroPro.mst")
+    }
 }
-else {
-    Write-Output ""
-    Write-Output "Customization is cancelled by user, script will now use the predefined SETUP and MST files..."
-    Start-Sleep -Seconds 2
-    $setup_ini = "https://github.com/Stensel8/Intune-Deployment-Tool/raw/main/Resources/setup.ini"
-    $AcroPro_mst = "https://github.com/Stensel8/Intune-Deployment-Tool/raw/main/Resources/AcroPro.mst"
-    (New-Object System.Net.WebClient).DownloadFile($setup_ini, "$Installation_directory\setup.ini")
-    (New-Object System.Net.WebClient).DownloadFile($AcroPro_mst, "$Installation_directory\AcroPro.mst")
-}
+else {}
+
+
+
 
 
 # Cleaning up some files otherwise the script will attempt to package these and that will fail.
