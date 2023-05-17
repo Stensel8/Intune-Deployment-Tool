@@ -38,7 +38,8 @@ and silently install the Adobe customization software."
 
   # Check if 7-Zip is installed, and if not, install 7-Zip via Chocolatey.
   # We need 7-Zip to compress and decompress files since Windows Explorer doesn't know how to unpack and silently install the Adobe customization software.
-  choco install 7zip -y -ia "'/D=$env:OS\Program Files\7-Zip'"
+  choco install 7zip -y --install-arguments="'/DIR=$ENV:OS\Program Files\7-Zip'"
+
 
 
   # Download the Adobe Customization software silently because we need it to customize the Adobe Reader DC installation.
