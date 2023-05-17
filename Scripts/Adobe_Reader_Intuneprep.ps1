@@ -21,24 +21,30 @@ and silently install the Adobe customization software."
   Write-Output ""
   Start-Sleep -Seconds 5
 
-  # Import Chocolatey and use it as a package manager.
-  if (!(Get-Command choco -ErrorAction SilentlyContinue)) {
-    Set-ExecutionPolicy Bypass -Scope Process -Force
-    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
-    $url = 'https://chocolatey.org/install.ps1'
-    $path = Join-Path $env:TEMP 'install.ps1'
-    $client = New-Object System.Net.WebClient
-    $client.DownloadFile($url, $path)
-    Unblock-File -Path $path
-
-    # Dot-source the install script to load its functions and variables
-    . $path
-}
-
-
-  # Check if 7-Zip is installed, and if not, install 7-Zip via Chocolatey.
+  # Download the 7-Zip silently.
   # We need 7-Zip to compress and decompress files since Windows Explorer doesn't know how to unpack and silently install the Adobe customization software.
-  choco install 7zip -y --install-arguments="'/DIR=$ENV:OS\Program Files\7-Zip'"
+
+  $installerUrl = "https://www.7-zip.org/a/7z2201-x64.exe"  # Replace with the URL to the 7-Zip installer
+  $installerPath = "$env:TEMP\7z2201-x64.exe"  # Path where the installer will be downloaded and saved
+  $outputPath = "C:\Program Files\7-Zip"  # Path where 7-Zip will be installed
+
+  # Download the installer
+  $webClient = New-Object System.Net.WebClient
+  $webClient.DownloadFile($installerUrl, $installerPath)
+
+  # Install 7-Zip silently
+  $arguments = "/S /D=`"$outputPath`""  # Arguments for silent installation and specifying the installation path
+  $process = Start-Process -FilePath $installerPath -ArgumentList $arguments -Wait -PassThru
+
+  if ($process.ExitCode -eq 0) {
+      Write-Host "7-Zip Installation completed successfully."
+  } else {
+      Write-Host "7-Zip Installation failed. Exit code: $($process.ExitCode)."
+  }
+
+  # Clean up the installer file
+  Remove-Item $installerPath -Force
+
 
 
 
