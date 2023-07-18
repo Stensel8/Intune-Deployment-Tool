@@ -180,9 +180,9 @@ Write-Output ""
 New-Item -ItemType Directory "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\" -Force | Out-Null
 Set-Location "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\"
 
-$sourceUrl = "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300320215/AcroRdrDCx642300320215_nl_NL.exe"
-$fallbackUrl = "https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300320215/AcroRdrDCx642300320215_nl_NL.exe"
-$fileName = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDCx642300320215_nl_NL.exe"
+$sourceUrl = "https://ardownload2.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300320244/AcroRdrDCx642300320244_nl_NL.exe"
+$fallbackUrl = "https://ardownload3.adobe.com/pub/adobe/acrobat/win/AcrobatDC/2300320244/AcroRdrDCx642300320244_nl_NL.exe"
+$fileName = "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDCx642300320244_nl_NL.exe"
 
  # Download the file using the primary URL
 Write-Output "Downloading Adobe Acrobat Reader DC..."
@@ -201,7 +201,7 @@ try {
 }
 
 Write-Output "Extracting .EXE file to individual files..."
-Start-Process -FilePath "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDCx642300320215_nl_NL.exe" -ArgumentList "-sfx_o`"$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup`" -sfx_ne -quiet" -Wait
+Start-Process -FilePath "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDCx642300320244_nl_NL.exe" -ArgumentList "-sfx_o`"$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup`" -sfx_ne -quiet" -Wait
 Write-Output ".EXE file extracted to the downloadfolder."
 
 
@@ -235,7 +235,7 @@ Write-Output ""
 # Cleaning up old installtion files.
 Write-Output "Cleaning up 2 files, otherwise the script will attempt to package these too and that will fail."
 Start-Sleep -Seconds 2
-Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDCx642300320215_nl_NL.exe" -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\AcroRdrDCx642300320244_nl_NL.exe" -Force -ErrorAction SilentlyContinue
 Remove-Item -Path "$env:USERPROFILE\Downloads\Adobe-Acrobat64-Setup\CustWiz.msi" -Force -ErrorAction SilentlyContinue
 start-sleep -Seconds 1
 Write-Output "
